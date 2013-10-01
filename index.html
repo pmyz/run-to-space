@@ -5,8 +5,46 @@
 <meta name="Author" content="pymz" />
 <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
 <script type="text/javascript">
+
+var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0'};
+
 function incrementerCompteur(){
-	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1);
+	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
+	$.playerData['metres']=parseInt($('#compteurMetre').text(),10);
+}
+function saveData(){
+	localStorage.setItem("playerData", JSON.stringify($.playerData));
+}
+function resetData(){
+	localStorage.removeItem("playerData");
+	$.playerData=defaultPlayersData;
+	$('#compteurMetre').text('0');
+}
+function loadData(){
+	if(localStorage){
+		var _data=localStorage.getItem("playerData");
+		if($.trim(_data).length>0) {
+			return JSON.parse(_data);
+		} else {
+			return defaultPlayersData;
+		}
+	} else {
+		alert('Navigateur non compatible');
+	}
+}
+function speedUp(){
+	$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
+	initIncrement()
+}
+function metreUp(){
+	$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
+}
+function initIncrement(){
+	clearInterval($.interval);
+	$.interval = setInterval(incrementerCompteur, 1000/parseInt($.playerData['bonusSpeed'],10));
+}
+function reloadInterval(){
+	clearInterval($.interval);
 }
 </script>
 </head>
@@ -15,8 +53,9 @@ function incrementerCompteur(){
 </div>
 </body>
 <script type="text/javascript">
+	$.playerData = loadData();
 	$('#div1').append('<span>Welcome to Run To Space</span>');
-	$('#div1').append('<br><br>Vous avez parcouru : <span id="compteurMetre">0</span> metres');
+	$('#div1').append('<br><br>Vous avez parcouru : <span id="compteurMetre">'+$.playerData['metres']+'</span> metres');
 	
 	//$('#div1').append('<br><br><input type="text" id="input1" readonly="readonly"/ value="0">');
 	//$('#div1').append('<button id="btn1">run</button>');
@@ -24,8 +63,18 @@ function incrementerCompteur(){
 	//	$('#input1').val(parseInt($('#input1').val(),10)+1);
 	//	});
 		
-	setInterval(incrementerCompteur, 1000);
+	initIncrement();
+	
+	
+	$('#div1').append('<br><br><button id="speedUp">Speed + 1</button>');
+	$('#div1').append('<br><br><button id="metreUp">Metres + 1</button>');
+	
+	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button>');
+	$('#save').on('click',saveData);
+	$('#reset').on('click',resetData);
+	$('#speedUp').on('click',speedUp);
+	$('#metreUp').on('click',metreUp);
+	//	});
 </script>
 </html>
-
 
