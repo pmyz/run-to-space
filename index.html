@@ -6,11 +6,13 @@
 <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
 <script type="text/javascript">
 
-var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0'};
+var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0'};
 
 function incrementerCompteur(){
 	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
+	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1);
 	$.playerData['metres']=parseInt($('#compteurMetre').text(),10);
+	$.playerData['endorphine']=parseInt($('#compteurEndorphine').text(),10);
 }
 function saveData(){
 	localStorage.setItem("playerData", JSON.stringify($.playerData));
@@ -33,11 +35,26 @@ function loadData(){
 	}
 }
 function speedUp(){
-	$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
-	initIncrement()
+	$('#error').html('');
+	if($.playerData['endorphine']>=10)
+	{
+		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
+		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-10);
+		initIncrement();
+	}else{
+		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
+	}	
 }
 function metreUp(){
-	$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
+	$('#error1').html('');
+	if($.playerData['endorphine']>=100)
+	{
+		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
+		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-100);
+		initIncrement();
+	}else{
+		$('#error1').html('<font color="red"> pas assez d\'endorphine</font>');
+	}
 }
 function initIncrement(){
 	clearInterval($.interval);
@@ -49,7 +66,7 @@ function reloadInterval(){
 </script>
 </head>
 <body>
-<div id="div1">
+<div id="div1"><div align="right" id="div2">
 </div>
 </body>
 <script type="text/javascript">
@@ -57,6 +74,7 @@ function reloadInterval(){
 	$('#div1').append('<span>Welcome to Run To Space</span>');
 	$('#div1').append('<br><br>Vous avez parcouru : <span id="compteurMetre">'+$.playerData['metres']+'</span> metres');
 	
+	$('#div2').append('Point d\'endorphine : <span id="compteurEndorphine">'+$.playerData['endorphine']+'</span>');
 	//$('#div1').append('<br><br><input type="text" id="input1" readonly="readonly"/ value="0">');
 	//$('#div1').append('<button id="btn1">run</button>');
 	//$('#btn1').on('click',function(){
@@ -66,8 +84,8 @@ function reloadInterval(){
 	initIncrement();
 	
 	
-	$('#div1').append('<br><br><button id="speedUp">Speed + 1</button>');
-	$('#div1').append('<br><br><button id="metreUp">Metres + 1</button>');
+	$('#div1').append('<br><br><button id="speedUp">Speed + 1</button> 10 endorphines <div id=error></div>');
+	$('#div1').append('<br><br><button id="metreUp">Metres + 1</button> 100 endorphines <div id=error1></div>');
 	
 	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button>');
 	$('#save').on('click',saveData);
