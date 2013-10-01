@@ -17,7 +17,7 @@ function saveData(){
 }
 function resetData(){
 	localStorage.removeItem("playerData");
-	$.playerData=defaultPlayersData;
+	$.playerData=$.extend(true,'',defaultPlayersData);
 	$('#compteurMetre').text('0');
 }
 function loadData(){
@@ -26,7 +26,7 @@ function loadData(){
 		if($.trim(_data).length>0) {
 			return JSON.parse(_data);
 		} else {
-			return defaultPlayersData;
+			return $.extend(true,'',defaultPlayersData);
 		}
 	} else {
 		alert('Navigateur non compatible');
