@@ -6,12 +6,15 @@
 <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
 <script type="text/javascript">
 
-var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0'};
+var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0','bonusEndorphine':'1'};
 
 function incrementerCompteur(){
 	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
-	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1);
 	$.playerData['metres']=parseInt($('#compteurMetre').text(),10);
+}
+
+function incrementerEndorphine(){
+	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1);
 	$.playerData['endorphine']=parseInt($('#compteurEndorphine').text(),10);
 }
 function saveData(){
@@ -21,6 +24,7 @@ function resetData(){
 	localStorage.removeItem("playerData");
 	$.playerData=$.extend(true,'',defaultPlayersData);
 	$('#compteurMetre').text('0');
+	$('#compteurEndorphine').text('0');
 }
 function loadData(){
 	if(localStorage){
@@ -58,10 +62,13 @@ function metreUp(){
 }
 function initIncrement(){
 	clearInterval($.interval);
+	clearInterval($.interval1);
 	$.interval = setInterval(incrementerCompteur, 1000/parseInt($.playerData['bonusSpeed'],10));
+	$.interval1 = setInterval(incrementerEndorphine, 1000/parseInt($.playerData['bonusEndorphine'],10));
 }
 function reloadInterval(){
 	clearInterval($.interval);
+	clearInterval($.interval1);
 }
 </script>
 </head>
