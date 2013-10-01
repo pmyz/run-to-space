@@ -11,5 +11,11 @@
 </body>
 <script type="text/javascript">
 	$('#div1').append('<span>Hello</span>');
+	$('#div1').append('<br><br><input type="text" id="input1" readonly="readonly"/ value="0">');
+	$('#div1').append('<button id="btn1">run</button>');
+	$('#btn1').on('click',function(){
+		$('#input1').val(parseInt($('#input1').val(),10)+1);
+		});
 </script>
 </html>
+
