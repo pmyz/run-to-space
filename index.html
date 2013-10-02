@@ -4,20 +4,25 @@
 <meta charset="iso-8859-1" />
 <meta name="Author" content="pymz" />
 <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<link href="css/leaflet.css" rel="stylesheet"/>
 <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 <link href="css/core.css" rel="stylesheet">
 <script src="js/jquery-ui-1.10.3.custom.js"></script>
 <script src="js/outils.js"></script>
+<script src="js/leaflet.js"></script>
 </head>
 <body>
 <div id="header"></div>
 <div id="div1"></div>
 <div id="div2"></div>
 <div id="div3"></div>
+<br><br>
+<div id="map"></div>
 <div id="footer"></div>
 </body>
 <script type="text/javascript">
 	$.playerData = loadData();
+	
 	$('#header').append('<div id="title" class="title">Welcome to Run To Space</div>');
 	$('#div1').append('<br><br>Vous avez parcouru : <span id="compteurMetre">'+$.playerData['metres']+'</span> metres');
 
@@ -40,6 +45,30 @@
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);
 	$('#metreUp').button().on('click',metreUp);
+	
+	
+	
+	
+	// create a map in the "map" div, set the view to a given place and zoom
+	var map = L.map('map').setView([51.505, -0.09], 13);
+
+	// add an OpenStreetMap tile layer
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+
+	// add a marker in the given location, attach some popup content to it and open the popup
+	L.marker([51.5, -0.09]).addTo(map)
+		.bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
+		.openPopup();
 	//	});
+	
+	var circle = L.circle([51.508, -0.11], 500, {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5
+	}).addTo(map);
+	
+	
 </script>
 </html>
