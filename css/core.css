@@ -1,0 +1,15 @@
+body {
+	font-family: Verdana, Helvetica, sans Serif;
+	font-size:12px;
+	margin: 0 auto;
+	height:auto;
+}
+.title {
+	width:100%;
+	text-align:center;
+	text-shadow: 0px 0px 7px rgba(0, 0, 0, 0.75);
+	color: #0080ff;
+	font-size: 50px;
+	float:left;
+	clear:both;
+}

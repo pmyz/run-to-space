@@ -4,104 +4,42 @@
 <meta charset="iso-8859-1" />
 <meta name="Author" content="pymz" />
 <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
-<script type="text/javascript">
-
-var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0','bonusEndorphine':'1'};
-
-function incrementerCompteur(){
-	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
-	$.playerData['metres']=parseInt($('#compteurMetre').text(),10);
-}
-
-function incrementerEndorphine(){
-	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1);
-	$.playerData['endorphine']=parseInt($('#compteurEndorphine').text(),10);
-}
-function saveData(){
-	localStorage.setItem("playerData", JSON.stringify($.playerData));
-}
-function resetData(){
-	localStorage.removeItem("playerData");
-	$.playerData=$.extend(true,'',defaultPlayersData);
-	$('#compteurMetre').text('0');
-	$('#compteurEndorphine').text('0');
-}
-function loadData(){
-	if(localStorage){
-		var _data=localStorage.getItem("playerData");
-		if($.trim(_data).length>0) {
-			return JSON.parse(_data);
-		} else {
-			return $.extend(true,'',defaultPlayersData);
-		}
-	} else {
-		alert('Navigateur non compatible');
-	}
-}
-function speedUp(){
-	$('#error').html('');
-	if($.playerData['endorphine']>=10)
-	{
-		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
-		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-10);
-		initIncrement();
-	}else{
-		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
-	}	
-}
-function metreUp(){
-	$('#error1').html('');
-	if($.playerData['endorphine']>=100)
-	{
-		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
-		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-100);
-		initIncrement();
-	}else{
-		$('#error1').html('<font color="red"> pas assez d\'endorphine</font>');
-	}
-}
-function initIncrement(){
-	clearInterval($.interval);
-	clearInterval($.interval1);
-	$.interval = setInterval(incrementerCompteur, 1000/parseInt($.playerData['bonusSpeed'],10));
-	$.interval1 = setInterval(incrementerEndorphine, 1000/parseInt($.playerData['bonusEndorphine'],10));
-}
-function reloadInterval(){
-	clearInterval($.interval);
-	clearInterval($.interval1);
-}
-</script>
+<link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+<link href="css/core.css" rel="stylesheet">
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
+<script src="js/outils.js"></script>
 </head>
 <body>
-<div id="div1"><div align="right" id="div2">
-<div id="div3">
-</div>
+<div id="header"></div>
+<div id="div1"></div>
+<div id="div2"></div>
+<div id="div3"></div>
+<div id="footer"></div>
 </body>
 <script type="text/javascript">
 	$.playerData = loadData();
-	$('#div1').append('<span>Welcome to Run To Space</span>');
+	$('#header').append('<div id="title" class="title">Welcome to Run To Space</div>');
 	$('#div1').append('<br><br>Vous avez parcouru : <span id="compteurMetre">'+$.playerData['metres']+'</span> metres');
-	
+
 	$('#div2').append('Point d\'endorphine : <span id="compteurEndorphine">'+$.playerData['endorphine']+'</span>');
 	//$('#div1').append('<br><br><input type="text" id="input1" readonly="readonly"/ value="0">');
 	//$('#div1').append('<button id="btn1">run</button>');
 	//$('#btn1').on('click',function(){
 	//	$('#input1').val(parseInt($('#input1').val(),10)+1);
 	//	});
-		
+
 	initIncrement();
-	
-	
+
+
 	$('#div1').append('<br><br><button id="speedUp">Speed + 1</button> 10 endorphines <div id=error></div>');
 	$('#div1').append('<br><br><button id="metreUp">Metres + 1</button> 100 endorphines <div id=error1></div>');
-	
+
 	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button>');
-	$('#div1').append('<br/><br/><br/><br/><br/><br/><br/><font size=40 color=red> PYM l\'HOMO<font>');
-	$('#save').on('click',saveData);
-	$('#reset').on('click',resetData);
-	$('#speedUp').on('click',speedUp);
-	$('#metreUp').on('click',metreUp);
+
+	$('#save').button().on('click',saveData);
+	$('#reset').button().on('click',resetData);
+	$('#speedUp').button().on('click',speedUp);
+	$('#metreUp').button().on('click',metreUp);
 	//	});
 </script>
 </html>
-
