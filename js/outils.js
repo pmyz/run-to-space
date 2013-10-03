@@ -36,6 +36,7 @@ function speedUp(){
 	{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-10);
+		$.playerData['endorphine']-=10;
 		initIncrement();
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
@@ -47,6 +48,7 @@ function metreUp(){
 	{
 		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-100);
+		$.playerData['endorphine']-=100;
 		initIncrement();
 	}else{
 		$('#error1').html('<font color="red"> pas assez d\'endorphine</font>');
