@@ -3,9 +3,9 @@
 var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0','bonusEndorphine':'1',
 						items:{}};
 
-var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5'},
-			{name:'chaussure de ville', id:'cityChoz', prize:'100', speedBonus:'10'},
-			{name:'chaussure de sport', id:'sportChoz', prize:'1000', speedBonus:'25'}];
+var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5',img:'images/feet.png'},
+			{name:'chaussure de ville', id:'cityChoz', prize:'100', speedBonus:'10',img:'images/shoes.png'},
+			{name:'patin a glace', id:'sportChoz', prize:'1000', speedBonus:'25',img:'images/patin.png'}];
 
 function incrementerCompteur(){
 	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
@@ -71,9 +71,9 @@ function reloadInterval(){
 }
 function toggleShop(){
 	if($('#shopDiv').length==0){
-		var str='<div id="shopDiv"><table><tr>', i;
+		var str='<br><div id="shopDiv"><table><tr>', i;
 		for(i=0;i<items.length;i++){
-			str+='<td><button id="btn_'+items[i].id+'" name="itemsBtn">'+items[i].name+'</button></td>';
+			str+='<tr><td><input type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
 		}
 		str+='</tr></table></div>';
 		$('#div3').append(str);
