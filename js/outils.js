@@ -13,7 +13,7 @@ function incrementerCompteur(){
 }
 
 function incrementerEndorphine(){
-	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1);
+	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+100);
 	$.playerData['endorphine']=parseInt($('#compteurEndorphine').text(),10);
 }
 function saveData(){
@@ -37,12 +37,13 @@ function loadData(){
 		alert('Navigateur non compatible');
 	}
 }
-function speedUp(){
+function speedUp(prix,bonus){
 	$('#error').html('');
-	if($.playerData['endorphine']>=10)
+	if($.playerData['endorphine']>=prix)
 	{
-		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
-		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-10);
+		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+bonus;
+		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
+		$.playerData['endorphine']-=prix;
 		initIncrement();
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
@@ -73,7 +74,7 @@ function toggleShop(){
 	if($('#shopDiv').length==0){
 		var str='<br><div id="shopDiv"><table><tr>', i;
 		for(i=0;i<items.length;i++){
-			str+='<tr><td><input type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
+			str+='<tr><td><input onclick=speedUp('+items[i].prize+','+items[i].speedBonus+') type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
 		}
 		str+='</tr></table></div>';
 		$('#div3').append(str);
