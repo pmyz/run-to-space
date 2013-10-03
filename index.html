@@ -38,6 +38,7 @@
 
 	$('#div1').append('<br><br><button id="speedUp">Speed + 1</button> 10 endorphines <div id=error></div>');
 	$('#div1').append('<br><br><button id="metreUp">Metres + 1</button> 100 endorphines <div id=error1></div>');
+	$('#div1').append('<br><br><button id="shop">Shop</button>');
 
 	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button>');
 
@@ -45,6 +46,7 @@
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);
 	$('#metreUp').button().on('click',metreUp);
+	$('#shop').button().on('click',toggleShop);
 	
 	
 	
