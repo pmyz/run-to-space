@@ -1,4 +1,11 @@
-var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0','bonusEndorphine':'1'};
+//params players
+// items : 0 not owned, 1 owned, 2 equiped
+var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0','bonusEndorphine':'1',
+						items:{}};
+
+var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5'},
+			{name:'chaussure de ville', id:'cityChoz', prize:'100', speedBonus:'10'},
+			{name:'chaussure de sport', id:'sportChoz', prize:'1000', speedBonus:'25'}];
 
 function incrementerCompteur(){
 	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
@@ -36,7 +43,6 @@ function speedUp(){
 	{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+1;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-10);
-		$.playerData['endorphine']-=10;
 		initIncrement();
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
@@ -48,7 +54,6 @@ function metreUp(){
 	{
 		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-100);
-		$.playerData['endorphine']-=100;
 		initIncrement();
 	}else{
 		$('#error1').html('<font color="red"> pas assez d\'endorphine</font>');
@@ -63,4 +68,15 @@ function initIncrement(){
 function reloadInterval(){
 	clearInterval($.interval);
 	clearInterval($.interval1);
+}
+function toggleShop(){
+	if($('#shopDiv').length==0){
+		var str='<div id="shopDiv"><table><tr>', i;
+		for(i=0;i<items.length;i++){
+			str+='<td><button id="btn_'+items[i].id+'" name="itemsBtn">'+items[i].name+'</button></td>';
+		}
+		str+='</tr></table></div>';
+		$('#div3').append(str);
+	}
+	$('#shopDiv').toggle();
 }
