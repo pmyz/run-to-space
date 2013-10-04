@@ -70,14 +70,11 @@ function reloadInterval(){
 	clearInterval($.interval);
 	clearInterval($.interval1);
 }
-function toggleShop(){
-	if($('#shopDiv').length==0){
-		var str='<br><div id="shopDiv"><table><tr>', i;
-		for(i=0;i<items.length;i++){
-			str+='<tr><td><input onclick=speedUp('+items[i].prize+','+items[i].speedBonus+') type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
-		}
-		str+='</tr></table></div>';
-		$('#div3').append(str);
+function initShop(){
+	var str='<table><tr>', i;
+	for(i=0;i<items.length;i++){
+		str+='<tr><td><input onclick=speedUp('+items[i].prize+','+items[i].speedBonus+') type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
 	}
-	$('#shopDiv').toggle();
+	str+='</tr></table>';
+	$('#shop').append(str);
 }
