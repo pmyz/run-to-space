@@ -55,13 +55,22 @@
  
      /*Construct an instance of MQA.TileMap with the options object*/
      window.map = new MQA.TileMap(options);
-   
-   MQA.withModule('largezoom','traffictoggle','viewoptions','geolocationcontrol','insetmapcontrol','mousewheel', function() {
+	 
+   MQA.withModule('directions', function() {
+          /*Uses the MQA.TileMap.addRoute function (added to the TileMap with the directions module)
+          passing in an array of location objects as the only parameter.*/
+          map.addRoute([
+           { latLng: { lat:  48.383, lng: -4.500 }},
+		   { latLng: { lat: 48.000, lng: -4.100 }}
+          ]);
+        });
+		
+	MQA.withModule('largezoom','traffictoggle','viewoptions','geolocationcontrol','insetmapcontrol','mousewheel', function() {
     
-   map.addControl(
+	map.addControl(
      new MQA.LargeZoom(),
      new MQA.MapCornerPlacement(MQA.MapCorner.TOP_LEFT, new MQA.Size(5,5))
-   );
+	);
  
    map.addControl(new MQA.TrafficToggle());
  
@@ -87,6 +96,8 @@
  
    map.enableMouseWheelZoom();
  });
+	
+
  });
  </script>
 <script type="text/javascript">
