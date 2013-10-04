@@ -12,14 +12,25 @@
 <script src="js/outils.js"></script>
 </head>
 <body>
-<div id="header"></div>
-<div id="div1"></div>
-<div id="div2"></div>
-<div id="div3"></div>
-<br><br>
 
-<div id="mapDiv"></div>
-<div id="footer"></div>
+	<div id="contener">
+		<div id="header"></div>
+		<div id="menu">
+			<ul>
+				<li><a href="#home">Home</a></li>
+				<li><a href="#shop">Shop</a></li>
+			</ul>
+			<div id="home">
+				<div id="info"></div>
+				<div id="div1"></div>
+				<div id="div2"></div>
+				<div id="div3"></div>
+				<div id="mapDiv"></div>
+			</div>
+			<div id="shop"></div>
+		</div>
+		<div id="footer"></div>
+	</div>
 
 <div data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="design:'headline', gutters:false" style="width:100%;height:100%;">
   <div data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'right'" style="width:250px;">
@@ -56,7 +67,7 @@ require(["esri/map", "dojo/domReady!"], function(Map) {
 
 	$('#div1').append('<br><br><button id="speedUp">Speed + 1</button> 10 endorphines <div id=error></div>');
 	$('#div1').append('<br><br><button id="metreUp">Metres + 1</button> 100 endorphines <div id=error1></div>');
-	$('#div1').append('<br><br><button id="shop">Shop</button>');
+	//$('#div1').append('<br><br><button id="shop">Shop</button>');
 
 	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button>');
 
@@ -64,6 +75,8 @@ require(["esri/map", "dojo/domReady!"], function(Map) {
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);
 	$('#metreUp').button().on('click',metreUp);
-	$('#shop').button().on('click',toggleShop);
+	//$('#shop').button().on('click',toggleShop);
+	$( "#menu" ).tabs();
+	initShop();
 </script>
 </html>
