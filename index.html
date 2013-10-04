@@ -36,45 +36,57 @@
 	</div>
 </body>
 <script>
-var map, locator, directions;
-
-
-require(["esri/urlUtils", "esri/map", "esri/dijit/Directions", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"], function(urlUtils, Map, Directions, Locator) { 
-		urlUtils.addProxyRule({
-          urlPrefix: "route.arcgis.com",  
-          proxyUrl: "/sproxy"
+      var map, directions;
+      
+      require([
+        "esri/map", "esri/geometry/Point", 
+        "esri/symbols/SimpleMarkerSymbol", "esri/graphic",
+		"esri/dijit/Directions", 
+		"dijit/layout/BorderContainer", "dijit/layout/ContentPane",
+        "dojo/domReady!"
+      ], function(
+        Map, Point,
+        SimpleMarkerSymbol, Graphic,
+        Directions
+      ) {
+		
+        map = new Map("mapDiv",{
+          basemap: "streets",
+          center: [-4.449, 48.400],
+          zoom: 12,
+          minZoom: 2
         });
-		
-		map = new Map("mapDiv", {
-			center: [-4.449, 48.400],
-			zoom: 12,
-			basemap: "streets"
-		});
-		
-		var startPoint, endPoint;
-		
-		// "esri/tasks/locator",
-		// locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
-		// locator.outSpatialReference = map.spatialReference;
-		
-		//locator.addressToLocations({address:{"SingleLine":"Brest"}},function(evt){
-		//	startPoint = evt.addresses[0].location;
-		//});
-		//locator.addressToLocations({address:{"SingleLine":"Guipavas"}},function(evt){
-		//	endPoint = evt.addresses[0].location;
-		//});
-		
-		startPoint = new esri.geometry.Point(-4.500, 48.383);//brest	
-		endPoint = new esri.geometry.Point(-4.100, 48.000);//quimper
+        
+		map.on("load", mapLoaded);
+      
+        function mapLoaded(){
+          var points = [[-4.449, 48.400]];
+          var iconPath = "M21.021,16.349c-0.611-1.104-1.359-1.998-2.109-2.623c-0.875,0.641-1.941,1.031-3.103,1.031c-1.164,0-2.231-0.391-3.105-1.031c-0.75,0.625-1.498,1.519-2.111,2.623c-1.422,2.563-1.578,5.192-0.35,5.874c0.55,0.307,1.127,0.078,1.723-0.496c-0.105,0.582-0.166,1.213-0.166,1.873c0,2.932,1.139,5.307,2.543,5.307c0.846,0,1.265-0.865,1.466-2.189c0.201,1.324,0.62,2.189,1.463,2.189c1.406,0,2.545-2.375,2.545-5.307c0-0.66-0.061-1.291-0.168-1.873c0.598,0.574,1.174,0.803,1.725,0.496C22.602,21.541,22.443,18.912,21.021,16.349zM15.808,13.757c2.362,0,4.278-1.916,4.278-4.279s-1.916-4.279-4.278-4.279c-2.363,0-4.28,1.916-4.28,4.279S13.445,13.757,15.808,13.757z";
+          var initColor = "#f3250a";
+          var graphic = new Graphic(new Point([-4.449, 48.400]), createSymbol(iconPath, initColor));
+            map.graphics.add(graphic);
 
+        };
+        
+        function createSymbol(path, color){
+          var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
+          markerSymbol.setPath(path);
+          markerSymbol.setColor(new dojo.Color(color));
+          markerSymbol.setOutline(null);
+          return markerSymbol;
+        };
+		
+		var startPoint = new Point([-4.500, 48.383]);//brest	
+		var endPoint = new Point([-4.100, 48.000]);//quimper
+		
 		directions = new Directions({
 			map: map,
 			stops:[startPoint,endPoint]
-        },"dir");
-
-        directions.startup();	
-	  
-});
+		},"dir");
+		
+		directions.startup();
+		
+      });
 </script>
 <script type="text/javascript">
 	$.playerData = loadData();
