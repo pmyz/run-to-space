@@ -6,9 +6,9 @@
 <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
 <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 <link href="css/core.css" rel="stylesheet">
-<link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
+
 <script>var dojoConfig = { parseOnLoad: true };</script>
-<script src="http://js.arcgis.com/3.7/"></script>
+<script src="http://www.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=Fmjtd%7Cluubnu6rn5%2Caw%3Do5-9uyl50"></script> 
 <script src="js/jquery-ui-1.10.3.custom.js"></script>
 <script src="js/outils.js"></script>
 </head>
@@ -27,7 +27,7 @@
 				<div id="div1"></div>
 				<div id="div2"></div>
 				<div id="div3"></div>
-				<div id="mapDiv"></div>
+				<div id="map" style="width:100; height:300px;"></div>
 				<div id="dir"></div>
 			</div>
 			<div id="shop"></div>
@@ -35,69 +35,29 @@
 		<div id="footer"></div>
 	</div>
 </body>
-<script>
-      var map, directions;
-      
-      require([
-        "esri/urlUtils","esri/map", "esri/geometry/Point", 
-        "esri/symbols/SimpleMarkerSymbol", "esri/graphic",
-		"esri/dijit/Directions", 
-		"dijit/layout/BorderContainer", "dijit/layout/ContentPane",
-        "dojo/domReady!"
-      ], function(
-        urlUtils, Map, Point,
-        SimpleMarkerSymbol, Graphic,
-        Directions
-      ) {
-	  
-		urlUtils.addProxyRule({
-          urlPrefix: "route.arcgis.com",  
-          proxyUrl: "/sproxy"
-        });
-
-        map = new Map("mapDiv",{
-          basemap: "streets",
-          center: [-4.449, 48.400],
-          zoom: 12,
-          minZoom: 2
-        });
-        
-
-      
-        function mapLoaded(){
-			var points = [[-4.449, 48.400]];
-			var iconPath = "M21.021,16.349c-0.611-1.104-1.359-1.998-2.109-2.623c-0.875,0.641-1.941,1.031-3.103,1.031c-1.164,0-2.231-0.391-3.105-1.031c-0.75,0.625-1.498,1.519-2.111,2.623c-1.422,2.563-1.578,5.192-0.35,5.874c0.55,0.307,1.127,0.078,1.723-0.496c-0.105,0.582-0.166,1.213-0.166,1.873c0,2.932,1.139,5.307,2.543,5.307c0.846,0,1.265-0.865,1.466-2.189c0.201,1.324,0.62,2.189,1.463,2.189c1.406,0,2.545-2.375,2.545-5.307c0-0.66-0.061-1.291-0.168-1.873c0.598,0.574,1.174,0.803,1.725,0.496C22.602,21.541,22.443,18.912,21.021,16.349zM15.808,13.757c2.362,0,4.278-1.916,4.278-4.279s-1.916-4.279-4.278-4.279c-2.363,0-4.28,1.916-4.28,4.279S13.445,13.757,15.808,13.757z";
-			var initColor = "#f3250a";
-			for(i=0;i<50;i++)
-			{
-				var a=-4.440+(i/100);
-				var b=48.440-(i/100);
-				var graphic = new Graphic(new Point([a, b]), createSymbol(iconPath, initColor));
-				map.graphics.add(graphic);
-			}
-        };
-		
-        map.on("load", mapLoaded);
-		
-        function createSymbol(path, color){
-          var markerSymbol = new esri.symbol.SimpleMarkerSymbol();
-          markerSymbol.setPath(path);
-          markerSymbol.setColor(new dojo.Color(color));
-          markerSymbol.setOutline(null);
-          return markerSymbol;
-        };
-		
-		var startPoint = new Point([-4.500, 48.383]);//brest	
-		var endPoint = new Point([-4.100, 48.000]);//quimper
-		
-		directions = new Directions({
-			map: map,
-			stops:[startPoint,endPoint]
-		},"dir");
-		directions.startup();
-		
-      });
-</script>
+<script type="text/javascript">
+ 
+   /*An example of using the MQA.EventUtil to hook into the window load event and execute defined function
+   passed in as the last parameter. You could alternatively create a plain function here and have it
+   executed whenever you like (e.g. <body onload="yourfunction">).*/
+ 
+   MQA.EventUtil.observe(window, 'load', function() {
+    
+     /*Create an object for options*/
+     var options={
+       elt:document.getElementById('map'),       /*ID of element on the page where you want the map added*/
+       zoom:10,                                /*initial zoom level of the map*/
+       latLng:{lat:48.400,lng:-4.449},  /*center of map in latitude/longitude */
+       mtype:'map',                              /*map type (map)*/
+       bestFitMargin:0,                          /*margin offset from the map viewport when applying a bestfit on shapes*/
+       zoomOnDoubleClick:true                    /*zoom in when double-clicking on map*/
+     };
+ 
+     /*Construct an instance of MQA.TileMap with the options object*/
+     window.map = new MQA.TileMap(options);
+   });
+ 
+ </script>
 <script type="text/javascript">
 	$.playerData = loadData();
 	
