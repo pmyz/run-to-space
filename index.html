@@ -7,6 +7,7 @@
 <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 <link href="css/core.css" rel="stylesheet">
 <link rel="stylesheet" href="http://js.arcgis.com/3.7/js/esri/css/esri.css">
+<script>var dojoConfig = { parseOnLoad: true };</script>
 <script src="http://js.arcgis.com/3.7/"></script>
 <script src="js/jquery-ui-1.10.3.custom.js"></script>
 <script src="js/outils.js"></script>
@@ -27,6 +28,7 @@
 				<div id="div2"></div>
 				<div id="div3"></div>
 				<div id="mapDiv"></div>
+				<div id="dir"></div>
 			</div>
 			<div id="shop"></div>
 		</div>
@@ -34,11 +36,43 @@
 	</div>
 </body>
 <script>
-require(["esri/map", "dojo/domReady!"], function(Map) { 
-      map = new Map("mapDiv", {
-      center: [-4.449, 48.400],
-      zoom: 12,
-      basemap: "streets"});
+var map, locator, directions;
+
+
+require(["esri/urlUtils", "esri/map", "esri/dijit/Directions", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"], function(urlUtils, Map, Directions, Locator) { 
+		urlUtils.addProxyRule({
+          urlPrefix: "route.arcgis.com",  
+          proxyUrl: "/sproxy"
+        });
+		
+		map = new Map("mapDiv", {
+			center: [-4.449, 48.400],
+			zoom: 12,
+			basemap: "streets"
+		});
+		
+		var startPoint, endPoint;
+		
+		// "esri/tasks/locator",
+		// locator = new Locator("http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
+		// locator.outSpatialReference = map.spatialReference;
+		
+		//locator.addressToLocations({address:{"SingleLine":"Brest"}},function(evt){
+		//	startPoint = evt.addresses[0].location;
+		//});
+		//locator.addressToLocations({address:{"SingleLine":"Guipavas"}},function(evt){
+		//	endPoint = evt.addresses[0].location;
+		//});
+		
+		startPoint = new esri.geometry.Point(-4.500, 48.383);//brest	
+		endPoint = new esri.geometry.Point(-4.100, 48.000);//quimper
+
+		directions = new Directions({
+			map: map,
+			stops:[startPoint,endPoint]
+        },"dir");
+
+        directions.startup();	
 	  
 });
 </script>
