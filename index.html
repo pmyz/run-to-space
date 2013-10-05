@@ -1,19 +1,70 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="iso-8859-1" />
-<meta name="Author" content="pymz" />
-<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
-<link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
-<link href="css/core.css" rel="stylesheet">
+  <head>
+    <meta charset="iso-8859-1" />
+	<meta name="Author" content="pymz" />
+	<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+	<link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+    <link href="css/core.css" rel="stylesheet">
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script src="js/jquery-ui-1.10.3.custom.js"></script>
+	<script src="js/outils.js"></script>
+    <script>
+	
+var map;
+var panel;
+var initialize;
+var calculate;
+var direction;
 
-<script>var dojoConfig = { parseOnLoad: true };</script>
-<script src="http://www.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js?key=Fmjtd%7Cluubnu6rn5%2Caw%3Do5-9uyl50"></script> 
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/outils.js"></script>
-</head>
-<body>
+function initialize() 
+{
 
+	var mapOptions = {
+	zoom: 8,
+	center: new google.maps.LatLng(48.144,-4.8),
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	map = new google.maps.Map(document.getElementById('mapDiv'),mapOptions);
+  
+	direction = new google.maps.DirectionsRenderer({
+	map   : map, 
+	panel : panel 
+	});
+			
+	var marker = new google.maps.Marker({
+		position: map.getCenter(),
+		icon: {
+		  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+		  scale: 10
+		},
+		draggable: true,
+		map: map
+	});
+	
+}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+	var request = {
+		origin      : "Brest",
+		destination : "Quimper",
+		travelMode  : google.maps.DirectionsTravelMode.DRIVING // Type de transport
+	}
+	var directionsService = new google.maps.DirectionsService(); // Service de calcul d'itinéraire
+	
+	directionsService.route(request, function(response, status){ // Envoie de la requête pour calculer le parcours
+            if(status == google.maps.DirectionsStatus.OK){
+                direction.setDirections(response); // Trace l'itinéraire sur la carte et les différentes étapes du parcours
+            }
+	});
+
+
+  
+    </script>
+  </head>
+  <body>
 	<div id="contener">
 		<div id="header"></div>
 		<div id="menu">
@@ -27,80 +78,16 @@
 				<div id="div1"></div>
 				<div id="div2"></div>
 				<div id="div3"></div>
-				<div id="map" style="width:100; height:300px;"></div>
-				<div id="dir"></div>
+			
 			</div>
 			<div id="shop"></div>
 		</div>
 		<div id="footer"></div>
 	</div>
-</body>
-<script type="text/javascript">
- 
-   /*An example of using the MQA.EventUtil to hook into the window load event and execute defined function
-   passed in as the last parameter. You could alternatively create a plain function here and have it
-   executed whenever you like (e.g. <body onload="yourfunction">).*/
- 
-   MQA.EventUtil.observe(window, 'load', function() {
-    
-     /*Create an object for options*/
-     var options={
-       elt:document.getElementById('map'),       /*ID of element on the page where you want the map added*/
-       zoom:10,                                  /*initial zoom level of the map*/
-       latLng:{lat:48.400,lng:-4.449},  		 /*center of map in latitude/longitude */
-       mtype:'map',                              /*map type (map)*/
-       bestFitMargin:0,                          /*margin offset from the map viewport when applying a bestfit on shapes*/
-       zoomOnDoubleClick:true                    /*zoom in when double-clicking on map*/
-     };
- 
-     /*Construct an instance of MQA.TileMap with the options object*/
-     window.map = new MQA.TileMap(options);
-	 
-   MQA.withModule('directions', function() {
-          /*Uses the MQA.TileMap.addRoute function (added to the TileMap with the directions module)
-          passing in an array of location objects as the only parameter.*/
-          map.addRoute([
-           { latLng: { lat:  48.383, lng: -4.500 }},
-		   { latLng: { lat: 48.000, lng: -4.100 }}
-          ]);
-        });
-		
-	MQA.withModule('largezoom','traffictoggle','viewoptions','geolocationcontrol','insetmapcontrol','mousewheel', function() {
-    
-	map.addControl(
-     new MQA.LargeZoom(),
-     new MQA.MapCornerPlacement(MQA.MapCorner.TOP_LEFT, new MQA.Size(5,5))
-	);
- 
-   map.addControl(new MQA.TrafficToggle());
- 
-   map.addControl(new MQA.ViewOptions());
- 
-   map.addControl(
-     new MQA.GeolocationControl(),
-     new MQA.MapCornerPlacement(MQA.MapCorner.TOP_RIGHT, new MQA.Size(10,50))
-   );
- 
-   /*Inset Map Control options*/
-   var options={
-     size:{width:150, height:125},
-     zoom:3,
-     mapType:'map',
-     minimized:true
-   };
- 
-   map.addControl(
-     new MQA.InsetMapControl(options),
-     new MQA.MapCornerPlacement(MQA.MapCorner.BOTTOM_RIGHT)
-   );
- 
-   map.enableMouseWheelZoom();
- });
-	
-
- });
- </script>
-<script type="text/javascript">
+	<br>
+	<div id="mapDiv"></div>		
+  </body>
+  <script type="text/javascript">
 	$.playerData = loadData();
 	
 	$('#header').append('<div id="title" class="title">Welcome to Run To Space</div><div id="contener1"></div>');
