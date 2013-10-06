@@ -16,6 +16,7 @@ var panel;
 var initialize;
 var calculate;
 var direction;
+var myMarker;
 
 function initialize() 
 {
@@ -31,21 +32,32 @@ function initialize()
 	direction = new google.maps.DirectionsRenderer({
 	map   : map, 
 	panel : panel 
-	});
-			
-	var marker = new google.maps.Marker({
-		position: map.getCenter(),
-		icon: {
-		  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-		  scale: 10
-		},
-		draggable: true,
-		map: map
+	});	
+	
+	var myLatlng = new google.maps.LatLng(48.144,-4.0320);
+	var myMarkerImage = new google.maps.MarkerImage('images/pickup.png');
+    myMarker = new google.maps.Marker({
+	// Coordonnées du cinéma
+	position: myLatlng, 
+	map: map,
+	// Nous ajoutons un paramètre supplémentaire
+	// icon pour lequel nous donnons le MarkerImage
+	// que nous venons de créer.
+	icon: myMarkerImage,
+	title: "Joueur 1"
 	});
 	
+	var inter=setInterval(function(){moveMarker(map,myMarker)},500);
+	
+	google.maps.event.addListener(myMarker, "click", function() {
+    clearInterval(inter);
+	});
 }
+	function moveMarker( map, marker ) {    
+    myMarker.setPosition(new google.maps.LatLng(myMarker.getPosition().lat()+0.001,myMarker.getPosition().lng()+0.001));
+	};
 
-	google.maps.event.addDomListener(window, 'load', initialize);
+
 
 	var request = {
 		origin      : "Brest",
@@ -59,9 +71,11 @@ function initialize()
                 direction.setDirections(response); // Trace l'itinéraire sur la carte et les différentes étapes du parcours
             }
 	});
+	
 
+	google.maps.event.addDomListener(window, 'load', initialize);
 
-  
+		
     </script>
   </head>
   <body>
@@ -78,14 +92,14 @@ function initialize()
 				<div id="div1"></div>
 				<div id="div2"></div>
 				<div id="div3"></div>
-			
+				<div id="mapDiv"></div>		
 			</div>
 			<div id="shop"></div>
 		</div>
 		<div id="footer"></div>
 	</div>
 	<br>
-	<div id="mapDiv"></div>		
+	
   </body>
   <script type="text/javascript">
 	$.playerData = loadData();
@@ -107,7 +121,7 @@ function initialize()
 
 	//$('#div1').append('<br><br><button id="shop">Shop</button>');
 
-	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br>');
+	$('#div1').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br><br><br>');
 
 	$('#save').button().on('click',saveData);
 	$('#reset').button().on('click',resetData);
