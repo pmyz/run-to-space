@@ -24,7 +24,8 @@
 				<div id="info"></div>
 				<div id="mapDiv"></div>		
 				<div id="debug"><span id="console"></span></div>
-				<div id="sav"></div>		
+				<div id="sav"></div>	
+				<div id="vitesse"></div>				
 			</div>
 			<div id="shop"></div>
 		</div>
@@ -48,7 +49,7 @@
 	initIncrement();
 
 	$('#sav').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br><br><br>');
-
+	$('#vitesse').append('<br><br><span id="compteurVitesse"></span><br>');
 	$('#save').button().on('click',saveData);
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);

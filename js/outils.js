@@ -52,6 +52,7 @@ function speedUp(prix,bonus){
 	{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+bonus;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
+		$('#vitesse').text((parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2)+" km/h"));
 		$.playerData['endorphine']-=prix;
 		initIncrement();
 	}else{
