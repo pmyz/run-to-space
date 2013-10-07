@@ -75,8 +75,8 @@ function initialize()
 			
 
 			
-			while( lat_lngsIndex <= currentStepNbPoints parseInt($.playerData['metres'],10) > currentDistance + (metreByPoint * lat_lngsIndex) ){
-				lat_lngsIndex++
+			while( lat_lngsIndex <= currentStepNbPoints && parseInt($.playerData['metres'],10) > currentDistance + (metreByPoint * lat_lngsIndex) ){
+				lat_lngsIndex++;
 			}
 			
 			if(currentStepNbPoints <= lat_lngsIndex){
