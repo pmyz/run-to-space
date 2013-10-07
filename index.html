@@ -17,21 +17,24 @@ var initialize;
 var calculate;
 var direction;
 var myMarker;
+var routes;
+var routesPoints=[];
+var routesPointsIndex=0;
 
 function initialize() 
 {
 
 	var mapOptions = {
-	zoom: 8,
-	center: new google.maps.LatLng(48.144,-4.8),
-	mapTypeId: google.maps.MapTypeId.ROADMAP
+		zoom: 8,
+		center: new google.maps.LatLng(48.144,-4.8),
+		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 
 	map = new google.maps.Map(document.getElementById('mapDiv'),mapOptions);
   
 	direction = new google.maps.DirectionsRenderer({
-	map   : map, 
-	panel : panel 
+		map   : map, 
+		panel : panel 
 	});	
 	
 	var myLatlng = new google.maps.LatLng(48.144,-4.0320);
@@ -54,10 +57,25 @@ function initialize()
 	});
 }
 	function moveMarker( map, marker ) {    
-    myMarker.setPosition(new google.maps.LatLng(myMarker.getPosition().lat()+0.001,myMarker.getPosition().lng()+0.001));
+		//myMarker.setPosition(new google.maps.LatLng(myMarker.getPosition().lat()+0.001,myMarker.getPosition().lng()+0.001));
+		if(routesPoints.length>0){
+			myMarker.setPosition(routesPoints[routesPointsIndex++]);
+		}
 	};
 
-
+	function getPoints(routes){
+		var result=[];
+		for (var i=0; i<routes.length;i++){
+			for (var j=0;j<routes[i].legs.length;j++){
+				for (var k=0;k<routes[i].legs[i].steps.length;k++){
+					for(var l=0;l<routes[i].legs[i].steps[k].lat_lngs.length;l++){
+						result.push(routes[i].legs[i].steps[k].lat_lngs[l])
+					}
+				}
+			}
+		}
+		return result;
+	}
 
 	var request = {
 		origin      : "Brest",
@@ -69,6 +87,9 @@ function initialize()
 	directionsService.route(request, function(response, status){ // Envoie de la requête pour calculer le parcours
             if(status == google.maps.DirectionsStatus.OK){
                 direction.setDirections(response); // Trace l'itinéraire sur la carte et les différentes étapes du parcours
+				routes = response.routes
+				//alert('route length : ' + response.routes.length);
+				routesPoints = getPoints(response.routes);
             }
 	});
 	
