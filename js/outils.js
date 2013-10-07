@@ -8,12 +8,12 @@ var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5',img:'im
 			{name:'patin a glace', id:'sportChoz', prize:'1000', speedBonus:'25',img:'images/patin.png'}];
 
 function incrementerCompteur(){
-	$('#compteurMetre').text(parseInt($('#compteurMetre').text(),10)+1+parseInt($.playerData['bonusMetres'],10));
-	$.playerData['metres']=parseInt($('#compteurMetre').text(),10);
+	$.playerData['metres']=parseInt($.playerData['metres']+1+parseInt($.playerData['bonusMetres'],10))
+	$('#compteurMetre').text(convertDistance($.playerData['metres']));
 }
 
 function incrementerEndorphine(){
-	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1);
+	$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)+1000);
 	$.playerData['endorphine']=parseInt($('#compteurEndorphine').text(),10);
 }
 function saveData(){
@@ -35,6 +35,15 @@ function loadData(){
 		}
 	} else {
 		alert('Navigateur non compatible');
+	}
+}
+
+function convertDistance(distance)
+{
+	if(distance < 1000){
+		return distance+" m";
+	}else{
+		return (distance/1000)+" km";
 	}
 }
 function speedUp(prix,bonus){
