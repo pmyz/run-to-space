@@ -22,6 +22,7 @@ var routesPoints=[];
 var routesPointsIndex=0;
 var currentDistance=0;
 var routeIndex=0, legsIndex=0, stepsIndex=0, lat_lngsIndex=0;
+var debug=true;
 
 function initialize() 
 {
@@ -79,8 +80,13 @@ function initialize()
 				lat_lngsIndex++;
 			}
 			
+			if(debug)
+				$('#console').text('Distance en cours : ' + (currentDistance+(metreByPoint * lat_lngsIndex)) + ' - Distance Step en cours : '+currentStepDistance+
+						' - metreByPoint : ' + metreByPoint +
+						' - lat_lngsIndex : ' +lat_lngsIndex );
+			
 			if(currentStepNbPoints <= lat_lngsIndex){
-				currentDistance=currentStepDistance;
+				currentDistance += parseInt(currentStepDistance,10);
 				stepsIndex++;
 				lat_lngsIndex=0;
 				return getNextPoint();
@@ -140,6 +146,7 @@ function initialize()
 				<div id="div2"></div>
 				<div id="div3"></div>
 				<div id="mapDiv"></div>		
+				<div id="debug"><span id="console"></span></div>
 			</div>
 			<div id="shop"></div>
 		</div>
