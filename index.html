@@ -20,6 +20,8 @@ var myMarker;
 var routes;
 var routesPoints=[];
 var routesPointsIndex=0;
+var currentDistance=0;
+var routeIndex=0, legsIndex=0, stepsIndex=0, lat_lngsIndex=0;
 
 function initialize() 
 {
@@ -58,11 +60,35 @@ function initialize()
 }
 	function moveMarker( map, marker ) {    
 		//myMarker.setPosition(new google.maps.LatLng(myMarker.getPosition().lat()+0.001,myMarker.getPosition().lng()+0.001));
-		if(routesPoints.length>0){
-			myMarker.setPosition(routesPoints[routesPointsIndex++]);
+		if(routes.length>0){
+			//getNextPoint();
+			myMarker.setPosition(getNextPoint());
 		}
 	};
 
+		
+	function getNextPoint(){
+		var currentStep = routes[routeIndex].legs[legsIndex].steps[stepsIndex],
+			currentStepDistance = currentStep.distance.value,
+			currentStepNbPoints = currentStep.lat_lngs.length;
+			metreByPoint = currentStepDistance/currentStepNbPoints;
+			
+
+			
+			while( lat_lngsIndex <= currentStepNbPoints parseInt($.playerData['metres'],10) > currentDistance + (metreByPoint * lat_lngsIndex) ){
+				lat_lngsIndex++
+			}
+			
+			if(currentStepNbPoints <= lat_lngsIndex){
+				currentDistance=currentStepDistance;
+				stepsIndex++;
+				lat_lngsIndex=0;
+				return getNextPoint();
+			}
+			
+			return currentStep.lat_lngs[lat_lngsIndex];
+		
+	}
 	function getPoints(routes){
 		var result=[];
 		for (var i=0; i<routes.length;i++){
