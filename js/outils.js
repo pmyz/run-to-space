@@ -5,7 +5,8 @@ var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorp
 
 var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5',img:'images/feet.png'},
 			{name:'chaussure de ville', id:'cityChoz', prize:'100', speedBonus:'10',img:'images/shoes.png'},
-			{name:'patin a glace', id:'sportChoz', prize:'1000', speedBonus:'25',img:'images/patin.png'}];
+			{name:'patin a glace', id:'sportChoz', prize:'1000', speedBonus:'25',img:'images/patin.png'},
+			{name:'biciclette', id:'bicicle', prize:'10000', speedBonus:'25',img:'images/man_bike.png'}];
 
 function incrementerCompteur(){
 	$.playerData['metres']=parseInt($.playerData['metres']+1+parseInt($.playerData['bonusMetres'],10))
@@ -46,7 +47,7 @@ function convertDistance(distance)
 		return (distance/1000)+" km";
 	}
 }
-function speedUp(prix,bonus){
+function speedUp(prix,bonus,id){
 	$('#error').html('');
 	if($.playerData['endorphine']>=prix)
 	{
@@ -57,7 +58,9 @@ function speedUp(prix,bonus){
 		initIncrement();
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
-	}	
+	}
+	if(id=="bicicle")
+		myMarker.setIcon({url: 'images/man_bike.png',scaledSize: new google.maps.Size(30,30)});
 }
 function metreUp(){
 	$('#error1').html('');
@@ -84,7 +87,7 @@ function reloadInterval(){
 function initShop(){
 	var str='<table><tr>', i;
 	for(i=0;i<items.length;i++){
-		str+='<tr><td><input onclick=speedUp('+items[i].prize+','+items[i].speedBonus+') type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
+		str+='<tr><td><input onclick="speedUp('+items[i].prize+','+items[i].speedBonus+',\''+items[i].id+'\')" type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
 	}
 	str+='</tr></table>';
 	$('#shop').append(str);
