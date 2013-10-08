@@ -49,7 +49,8 @@
 	//	});
 
 	initIncrement();
-	$('#stat').append('<br><br>Speed Bonus :<span id="bonus">'+$.playerData['bonusSpeed']+'</span> /'+max_speedbonus+'<br>');
+	$('#stat').append('<br><br>Speed Bonus :<span id="bonusSpeed">'+$.playerData['bonusSpeed']+'</span> /<span id="capSpeed">'+$.playerData['capSpeed']+'</span><br>');
+	$('#stat').append('<br><br>Meter Bonus :<span id="bonusMetres">'+$.playerData['bonusMetres']+'</span> /<span id="meterCap">'+$.playerData['capMetres']+'</span><br>');
 	$('#vitesse').append('<br><br>Vitesse : <span id="compteurVitesse">2 km/h</span><br>');
 	$('#sav').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br><br><br>');
 	

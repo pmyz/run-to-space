@@ -1,12 +1,13 @@
 //params players
 // items : 0 not owned, 1 owned, 2 equiped
-var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorphine':'0','bonusEndorphine':'1',
+var defaultPlayersData={'metres':'0','bonusSpeed':'1','capSpeed':'1','bonusMetres':'0','capMetres':'1','endorphine':'0','bonusEndorphine':'1',
 						items:{}};
 
-var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5',img:'images/feet.png'},
-			{name:'chaussure de ville', id:'cityChoz', prize:'100', speedBonus:'10',img:'images/shoes.png'},
-			{name:'patin a glace', id:'sportChoz', prize:'1000', speedBonus:'25',img:'images/patin.png'},
-			{name:'bicyclette', id:'bicycle', prize:'10000', speedBonus:'25',img:'images/man_bike.png'}];
+var items=[	{name:'pied', id:'noobChoz', prize:'10', bonusSpeed : '1',capSpeed:'5',capMetres:'2',img:'images/feet.png'},
+			{name:'bicyclette', id:'bicycle', prize:'10000', bonusSpeed : '5',capSpeed:'20',capMetres:'10',img:'images/man_bike.png'},
+			{name:'206', id:'206', prize:'50000', bonusSpeed : '10',capSpeed:'30',capMetres:'13',img:'images/206/png/peugeot_206_red.png'},
+			{name:'porsche', id:'porsche', prize:'100000', bonusSpeed : '15',capSpeed:'40',capMetres:'15',img:'images/porsche/Bleu.png'}
+			];
 
 var max_speedbonus=100;
 
@@ -49,27 +50,33 @@ function convertDistance(distance)
 		return (distance/1000)+" km";
 	}
 }
-function speedUp(prix,bonus,id){
+function speedUp(prix,bonus,id,i){
 	$('#error').html('');
 	if($.playerData['endorphine']>=prix)
 	{
-		if($.playerData['bonusSpeed']<max_speedbonus)
+		if(parseInt(items[i].capSpeed)>parseInt($.playerData['capSpeed']))
+		{
+		$.playerData['capSpeed']=items[i].capSpeed;
+		$('#capSpeed').text(parseInt($.playerData['capSpeed']));
+		myMarker.setIcon({url: items[i].img,scaledSize: new google.maps.Size(30,30)});
+		}
+		
+		if($.playerData['bonusSpeed']<$.playerData['capSpeed'])
 		{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+bonus;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
 		$('#compteurVitesse').text((parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2)+" km/h"));
-		$.playerData['endorphine']-=prix;
-		$('#bonus').text(parseInt($.playerData['bonusSpeed']));
+		$.playerData['endorphine']-=prix;	
+		$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
 		initIncrement();
 		}else{
-			$.playerData['bonusSpeed']=100;
 			$('#error').html('<font color="red"> bonus speed maximum</font>');
 		}
+		
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
 	}
-	if(id=="bicycle")
-		myMarker.setIcon({url: 'images/man_bike.png',scaledSize: new google.maps.Size(30,30)});
+	
 }
 function metreUp(){
 	$('#error1').html('');
@@ -94,10 +101,10 @@ function reloadInterval(){
 	clearInterval($.interval1);
 }
 function initShop(){
-	var str='<table><tr>', i;
+	var str='<table><tr><td align=center>Vehicules</td></tr><tr>', i;
 	for(i=0;i<items.length;i++){
-		str+='<tr><td><input onclick="speedUp('+items[i].prize+','+items[i].speedBonus+',\''+items[i].id+'\')" type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+') speedBonus : '+items[i].speedBonus+'</input><span id="error"></span></td></tr>';
+		str+='<tr><td><input onclick="speedUp('+items[i].prize+','+items[i].bonusSpeed+',\''+items[i].id+'\','+i+')" type=image height=64px width=64px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"></input></td>  <td>'+items[i].name+'('+items[i].prize+') capSpeed : '+items[i].capSpeed+' capMetres : '+items[i].capMetres+' bonusSpeed : '+items[i].bonusSpeed+'</tr>';
 	}
-	str+='</tr></table>';
+	str+='</tr><span id="error"></span></td></table>';
 	$('#shop').append(str);
 }
