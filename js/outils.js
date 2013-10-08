@@ -68,7 +68,7 @@ function speedUp(prix,bonus,id){
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
 	}
-	if(id=="bycicle")
+	if(id=="bicycle")
 		myMarker.setIcon({url: 'images/man_bike.png',scaledSize: new google.maps.Size(30,30)});
 }
 function metreUp(){
