@@ -7,6 +7,7 @@
 	<link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
     <link href="css/core.css" rel="stylesheet">
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
 	<script src="js/jquery-ui-1.10.3.custom.js"></script>
 	<script src="js/outils.js"></script>
 	<script src="js/googlemap.js"></script>
@@ -21,13 +22,17 @@
 				<div align="right" id="money"></div>
 			</ul>
 			<div id="home">
+				
 				<div id="info"></div>
 				<div id="mapDiv"></div>		
 				<div id="debug"><span id="console"></span></div>
-				<div id="stat"></div>
-				<div id="vitesse"></div>	
-				<div id="sav"></div>	
-			
+				<table width=100%>
+					<tr>
+						<td><div id="stat"></div></td>
+						<td align='right'><div id="vitesse"></div></td>
+					</tr>
+				</table>
+				<div id="sav"></div>
 			</div>
 			<div id="shop"></div>
 		</div>
@@ -60,6 +65,6 @@
 	$('#metreUp').button().on('click',metreUp);
 	//$('#shop').button().on('click',toggleShop);
 	$( "#menu" ).tabs();
-	initShop();
+	initShop(); 
 </script>
 </html>

@@ -65,7 +65,8 @@ function speedUp(prix,bonus,id,i){
 		{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+bonus;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
-		$('#compteurVitesse').text((parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2)+" km/h"));
+		
+		drawChart();
 		$.playerData['endorphine']-=prix;	
 		$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
 		initIncrement();
@@ -107,4 +108,25 @@ function initShop(){
 	}
 	str+='</tr><span id="error"></span></td></table>';
 	$('#shop').append(str);
+}
+	
+google.load('visualization', '1', {packages:['gauge']});
+google.setOnLoadCallback(drawChart);
+
+function drawChart() {
+	vitesse=parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2);
+	var data = google.visualization.arrayToDataTable([
+	  ['Label', 'Value'],
+	  ['Vitesse (km/h)', parseInt(vitesse)]
+	]);
+
+	var options = {
+	  width: 500, height: 220,
+	  redFrom: 90, redTo: 100,
+	  yellowFrom:75, yellowTo: 90,
+	  minorTicks: 5
+	};
+
+	var chart = new google.visualization.Gauge(document.getElementById('vitesse'));
+	chart.draw(data, options);
 }
