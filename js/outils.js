@@ -6,7 +6,9 @@ var defaultPlayersData={'metres':'0','bonusSpeed':'1', 'bonusMetres':'0','endorp
 var items=[	{name:'claquette', id:'noobChoz', prize:'10', speedBonus:'5',img:'images/feet.png'},
 			{name:'chaussure de ville', id:'cityChoz', prize:'100', speedBonus:'10',img:'images/shoes.png'},
 			{name:'patin a glace', id:'sportChoz', prize:'1000', speedBonus:'25',img:'images/patin.png'},
-			{name:'biciclette', id:'bicicle', prize:'10000', speedBonus:'25',img:'images/man_bike.png'}];
+			{name:'bicyclette', id:'bicycle', prize:'10000', speedBonus:'25',img:'images/man_bike.png'}];
+
+var max_speedbonus=100;
 
 function incrementerCompteur(){
 	$.playerData['metres']=parseInt($.playerData['metres']+1+parseInt($.playerData['bonusMetres'],10))
@@ -51,15 +53,22 @@ function speedUp(prix,bonus,id){
 	$('#error').html('');
 	if($.playerData['endorphine']>=prix)
 	{
+		if($.playerData['bonusSpeed']<max_speedbonus)
+		{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+bonus;
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
-		$('#vitesse').text((parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2)+" km/h"));
+		$('#compteurVitesse').text((parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2)+" km/h"));
 		$.playerData['endorphine']-=prix;
+		$('#bonus').text(parseInt($.playerData['bonusSpeed']));
 		initIncrement();
+		}else{
+			$.playerData['bonusSpeed']=100;
+			$('#error').html('<font color="red"> bonus speed maximum</font>');
+		}
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
 	}
-	if(id=="bicicle")
+	if(id=="bycicle")
 		myMarker.setIcon({url: 'images/man_bike.png',scaledSize: new google.maps.Size(30,30)});
 }
 function metreUp(){
@@ -87,7 +96,7 @@ function reloadInterval(){
 function initShop(){
 	var str='<table><tr>', i;
 	for(i=0;i<items.length;i++){
-		str+='<tr><td><input onclick="speedUp('+items[i].prize+','+items[i].speedBonus+',\''+items[i].id+'\')" type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+')</input></td></tr>';
+		str+='<tr><td><input onclick="speedUp('+items[i].prize+','+items[i].speedBonus+',\''+items[i].id+'\')" type=image height=50px width=80px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"> '+items[i].name+'('+items[i].prize+') speedBonus : '+items[i].speedBonus+'</input><span id="error"></span></td></tr>';
 	}
 	str+='</tr></table>';
 	$('#shop').append(str);

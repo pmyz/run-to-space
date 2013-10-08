@@ -24,8 +24,10 @@
 				<div id="info"></div>
 				<div id="mapDiv"></div>		
 				<div id="debug"><span id="console"></span></div>
+				<div id="stat"></div>
+				<div id="vitesse"></div>	
 				<div id="sav"></div>	
-				<div id="vitesse"></div>				
+			
 			</div>
 			<div id="shop"></div>
 		</div>
@@ -47,9 +49,10 @@
 	//	});
 
 	initIncrement();
-
+	$('#stat').append('<br><br>Speed Bonus :<span id="bonus">'+$.playerData['bonusSpeed']+'</span> /'+max_speedbonus+'<br>');
+	$('#vitesse').append('<br><br>Vitesse : <span id="compteurVitesse">2 km/h</span><br>');
 	$('#sav').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br><br><br>');
-	$('#vitesse').append('<br><br><span id="compteurVitesse"></span><br>');
+	
 	$('#save').button().on('click',saveData);
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);
