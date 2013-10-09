@@ -1,16 +1,20 @@
 //params players
-// items : 0 not owned, 1 owned, 2 equiped
+// vehicle : 0 not owned, 1 owned, 2 equiped
 var defaultPlayersData={'metres':'0','bonusSpeed':'1','capSpeed':'1','bonusMetres':'1','capMetres':'1','endorphine':'0','bonusEndorphine':'1',
-						items:{}};
+						vehicle:{},tuning:{}};
 
-var items=[	{name:'pied', id:'noobChoz', prize:'10', bonusSpeed : '1',capSpeed:'5',capMetres:'2',img:'images/feet.png'},
-			{name:'bicyclette', id:'bicycle', prize:'10000', bonusSpeed : '5',capSpeed:'20',capMetres:'10',img:'images/man_bike.png'},
-			{name:'206', id:'206', prize:'50000', bonusSpeed : '10',capSpeed:'30',capMetres:'13',img:'images/206/png/peugeot_206_red.png'},
-			{name:'porsche', id:'porsche', prize:'100000', bonusSpeed : '15',capSpeed:'40',capMetres:'15',img:'images/porsche/Bleu.png'}
+var vehicle=[	{name:'pied', id:'noobChoz', prize:'10',capSpeed:'5',capMetres:'2',img:'images/feet.png'},
+			{name:'bicyclette', id:'bicycle', prize:'10000',capSpeed:'20',capMetres:'10',img:'images/man_bike.png'},
+			{name:'206', id:'206', prize:'50000',capSpeed:'30',capMetres:'13',img:'images/206/png/peugeot_206_red.png'},
+			{name:'porsche', id:'porsche', prize:'100000',capSpeed:'40',capMetres:'15',img:'images/porsche/Bleu.png'}
 			];
-
-var max_speedbonus=100;
-
+			
+var tuning=[{name:'bonus1', id:'bonus1', prize:'10',bonusSpeed:'5',bonusMetres:'2',img:'images/feet.png'},
+			{name:'bonus2', id:'bonus2', prize:'100',bonusSpeed:'20',bonusMetres:'10',img:'images/man_bike.png'},
+			{name:'bonus3', id:'bonus3', prize:'500',bonusSpeed:'30',bonusMetres:'13',img:'images/206/png/peugeot_206_red.png'},
+			{name:'bonus4', id:'bonus4', prize:'1000',bonusSpeed:'40',bonusMetres:'15',img:'images/porsche/Bleu.png'}
+			];
+			
 function incrementerCompteur(){
 	$.playerData['metres']=parseInt($.playerData['metres']+parseInt($.playerData['bonusMetres'],10))
 	$('#compteurMetre').text(convertDistance($.playerData['metres']));
@@ -50,47 +54,82 @@ function convertDistance(distance)
 		return (distance/1000)+" km";
 	}
 }
-function speedUp(prix,bonus,id,i){
+function speedUp(prix,bonusSpeed,bonusMetres,i){
 	$('#error').html('');
 	if($.playerData['endorphine']>=prix)
 	{
-		if(parseInt(items[i].capSpeed)>parseInt($.playerData['capSpeed']))
-		{
-		$.playerData['capSpeed']=items[i].capSpeed;
-		$('#capSpeed').text(parseInt($.playerData['capSpeed']));
-		myMarker.setIcon({url: items[i].img,scaledSize: new google.maps.Size(30,30)});
-		}
-		
+				
 		if($.playerData['bonusSpeed']<$.playerData['capSpeed'])
 		{
-		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'],10)+bonus;
-		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
-		
-		drawChart();
-		$.playerData['endorphine']-=prix;	
+		//update speed
+		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'])+bonusSpeed;
 		$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
-		initIncrement();
+		tuning[i].prize=prix*prix;
 		}else{
-			$('#error').html('<font color="red"> bonus speed maximum</font>');
+			$.playerData['bonusSpeed']=$.playerData['capSpeed']
+			$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
+			$('#error').html('<font color="red"> cap speed atteint</font>');
 		}
+		
+		if($.playerData['bonusMetres']<$.playerData['capMetres'])
+		{
+		//update metre
+		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'])+bonusMetres;
+		$('#bonusMetres').text($.playerData['bonusMetres'])
+		}else{
+			$.playerData['bonusMetres']=$.playerData['capMetres']
+			$('#bonusMetres').text(parseInt($.playerData['bonusMetres']));
+			$('#error').html('<font color="red"> cap metres atteint</font>');
+		}
+		
+		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
+		$.playerData['endorphine']-=prix;	
+		
+		//update compteur vitesse
+		drawChart();
+		
+		initIncrement();
+		
 		
 	}else{
 		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
 	}
 	
 }
-function metreUp(){
-	$('#error1').html('');
-	if($.playerData['endorphine']>=100)
+
+function newVehicle(prix,i)
+{
+	$('#error').html('');
+	if($.playerData['endorphine']>=prix)
 	{
-		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'],10)+1;
-		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-100);
-		$.playerData['endorphine']-=100;
-		initIncrement();
+		//deduction du prix
+		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
+		$.playerData['endorphine']-=prix;	
+		
+		//update cap speed
+		if(parseInt(vehicle[i].capSpeed)>parseInt($.playerData['capSpeed']))
+		{
+			$.playerData['capSpeed']=vehicle[i].capSpeed;
+			$('#capSpeed').text(parseInt($.playerData['capSpeed']));
+			myMarker.setIcon({url: vehicle[i].img,scaledSize: new google.maps.Size(30,30)});
+		}else{
+			$('#error').html('<font color="red"> Vous avez deja un meilleur vehicule speed maximum</font>');
+		}
+		
+		//update cap metres
+		if(parseInt(vehicle[i].capMetres)>parseInt($.playerData['capMetres']))
+		{
+		$.playerData['capMetres']=vehicle[i].capMetres;
+		$('#capMetres').text(parseInt($.playerData['capMetres']));
+		myMarker.setIcon({url: vehicle[i].img,scaledSize: new google.maps.Size(30,30)});
+		}else{
+			$('#error').html('<font color="red"> Vous avez deja un meilleur vehicule speed maximum</font>');
+		}
 	}else{
-		$('#error1').html('<font color="red"> pas assez d\'endorphine</font>');
+		$('#error').html('<font color="red"> pas assez d\'endorphine</font>');
 	}
 }
+
 function initIncrement(){
 	clearInterval($.interval);
 	clearInterval($.interval1);
@@ -101,13 +140,22 @@ function reloadInterval(){
 	clearInterval($.interval);
 	clearInterval($.interval1);
 }
-function initShop(){
+function initVehicle(){
 	var str='<table><tr><td align=center>Vehicules</td></tr><tr>', i;
-	for(i=0;i<items.length;i++){
-		str+='<tr><td><input onclick="speedUp('+items[i].prize+','+items[i].bonusSpeed+',\''+items[i].id+'\','+i+')" type=image height=64px width=64px src="'+items[i].img+'" id="btn_'+items[i].id+'" name="itemsBtn"></input></td>  <td>'+items[i].name+'('+items[i].prize+') capSpeed : '+items[i].capSpeed+' capMetres : '+items[i].capMetres+' bonusSpeed : '+items[i].bonusSpeed+'</tr>';
+	for(i=0;i<vehicle.length;i++){
+		str+='<tr><td><input onclick="newVehicle('+vehicle[i].prize+','+i+')" type=image height=64px width=64px src="'+vehicle[i].img+'" id="btn_'+vehicle[i].id+'" name="itemsBtn"></input></td>  <td>'+vehicle[i].name+'('+vehicle[i].prize+') capSpeed : '+vehicle[i].capSpeed+' capMetres : '+vehicle[i].capMetres+'</tr>';
 	}
 	str+='</tr><span id="error"></span></td></table>';
-	$('#shop').append(str);
+	$('#vehicle').append(str);
+}
+
+function initTuning(){
+	var str='<table><tr><td align=center>Tuning</td></tr><tr>', i;
+	for(i=0;i<tuning.length;i++){
+		str+='<tr><td><input onclick="speedUp('+tuning[i].prize+','+tuning[i].bonusSpeed+','+tuning[i].bonusMetres+','+i+')" type=image height=64px width=64px src="'+tuning[i].img+'" id="btn_'+tuning[i].id+'" name="itemsBtn"></input></td>  <td>'+tuning[i].name+'('+tuning[i].prize+') bonusSpeed : '+tuning[i].bonusSpeed+' bonusMetres : '+tuning[i].bonusMetres+' </tr>';
+	}
+	str+='</tr><span id="error"></span></td></table>';
+	$('#tuning').append(str);
 }
 	
 google.load('visualization', '1', {packages:['gauge']});

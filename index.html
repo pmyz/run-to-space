@@ -32,10 +32,16 @@
 						<td align='right'><div id="vitesse"></div></td>
 					</tr>
 				</table>
-				<div id="sav"></div>
+				<div id="sav"></div>					
 			</div>
-			<div id="shop"></div>
-		</div>
+			<div id="shop"> 
+				<table width=100%>
+					<tr>
+						<td><div id="tuning"></div></td>
+						<td align=right><div id="vehicle"></div></td>
+					</tr>
+				</table>
+			</div>
 		<div id="footer"></div>
 	</div>
 	<br>
@@ -55,16 +61,16 @@
 
 	initIncrement();
 	$('#stat').append('<br><br>Speed Bonus :<span id="bonusSpeed">'+$.playerData['bonusSpeed']+'</span> /<span id="capSpeed">'+$.playerData['capSpeed']+'</span><br>');
-	$('#stat').append('<br><br>Meter Bonus :<span id="bonusMetres">'+$.playerData['bonusMetres']+'</span> /<span id="meterCap">'+$.playerData['capMetres']+'</span><br>');
+	$('#stat').append('<br><br>Meter Bonus :<span id="bonusMetres">'+$.playerData['bonusMetres']+'</span> /<span id="capMetres">'+$.playerData['capMetres']+'</span><br>');
 	$('#vitesse').append('<br><br>Vitesse : <span id="compteurVitesse">2 km/h</span><br>');
 	$('#sav').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br><br><br>');
 	
 	$('#save').button().on('click',saveData);
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);
-	$('#metreUp').button().on('click',metreUp);
 	//$('#shop').button().on('click',toggleShop);
 	$( "#menu" ).tabs();
-	initShop(); 
+	initVehicle(); 
+	initTuning();
 </script>
 </html>
