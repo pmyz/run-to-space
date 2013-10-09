@@ -1,6 +1,6 @@
 //params players
 // items : 0 not owned, 1 owned, 2 equiped
-var defaultPlayersData={'metres':'0','bonusSpeed':'1','capSpeed':'1','bonusMetres':'0','capMetres':'1','endorphine':'0','bonusEndorphine':'1',
+var defaultPlayersData={'metres':'0','bonusSpeed':'1','capSpeed':'1','bonusMetres':'1','capMetres':'1','endorphine':'0','bonusEndorphine':'1',
 						items:{}};
 
 var items=[	{name:'pied', id:'noobChoz', prize:'10', bonusSpeed : '1',capSpeed:'5',capMetres:'2',img:'images/feet.png'},
@@ -12,7 +12,7 @@ var items=[	{name:'pied', id:'noobChoz', prize:'10', bonusSpeed : '1',capSpeed:'
 var max_speedbonus=100;
 
 function incrementerCompteur(){
-	$.playerData['metres']=parseInt($.playerData['metres']+1+parseInt($.playerData['bonusMetres'],10))
+	$.playerData['metres']=parseInt($.playerData['metres']+parseInt($.playerData['bonusMetres'],10))
 	$('#compteurMetre').text(convertDistance($.playerData['metres']));
 }
 
@@ -114,7 +114,7 @@ google.load('visualization', '1', {packages:['gauge']});
 google.setOnLoadCallback(drawChart);
 
 function drawChart() {
-	vitesse=parseInt(((1+$.playerData['bonusMetres'])*$.playerData['bonusSpeed']*1000)/7200).toFixed(2);
+	vitesse=parseInt(($.playerData['bonusMetres']*$.playerData['bonusSpeed'])*3600/1000);
 	var data = google.visualization.arrayToDataTable([
 	  ['Label', 'Value'],
 	  ['Vitesse (km/h)', parseInt(vitesse)]
