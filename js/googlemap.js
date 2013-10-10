@@ -1,4 +1,4 @@
-var map, panel, initialize,
+var map, panel, initialize, bonusMarkers=[],
 	calculate, direction, myMarker,
 	routes, routesPoints=[],
 	routesPointsIndex=0,
@@ -49,16 +49,51 @@ function initialize() {
 	});
 	
 	var inter=setInterval(function(){moveMarker(map,myMarker)},500);
+	var interBonus=setInterval(function(){popBonus(map)},5000);
 	
 	google.maps.event.addListener(myMarker, "click", function() {clearInterval(inter);});
 	
+	initMarkerZoomLevel();
 	initRoute();
 }
 
   /***************
  ** Fonctions **
 **************/
+function initMarkerZoomLevel(){
+	google.maps.event.addListener(map, 'zoom_changed', function () {
+		var currentZoom = map.getZoom();
 
+		for(var i = 0; i < bonusMarkers.length; i++){
+			if(currentZoom > 9){
+				bonusMarkers[i].setVisible(true);
+			} else  {
+				bonusMarkers[i].setVisible(false);
+			}
+		}
+	});
+}
+function popBonus(map){
+	var ranNum1 = (Math.floor(Math.random() * 50))/100,
+		ranNum2 = (Math.floor(Math.random() * 50))/100;
+	
+	var marker = new google.maps.Marker({
+		position: new google.maps.LatLng(48.144+ranNum1,-4.0320+ranNum2), 
+		map: map,
+		icon: {url: 'images/marker-icon.png'},
+		visible: false,
+		title: "Bonus"
+	});
+	
+	google.maps.event.addListener(marker, "click", function() {bonusClickEvt(marker);});
+	
+	bonusMarkers.push(marker);
+	//marker.setMap(map);
+}
+function bonusClickEvt(marker){
+	marker.setVisible(false);
+	//bonusMarkers.pop(this);
+}
 function moveMarker( map, marker ) {    
 	//myMarker.setPosition(new google.maps.LatLng(myMarker.getPosition().lat()+0.001,myMarker.getPosition().lng()+0.001));
 	if(routes.length>0){
