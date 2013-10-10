@@ -91,7 +91,8 @@ function popBonus(map){
 	//marker.setMap(map);
 }
 function bonusClickEvt(marker){
-	marker.setVisible(false);
+	google.maps.event.clearInstanceListeners(marker)
+	marker.setMap(null);
 	//bonusMarkers.pop(this);
 }
 function moveMarker( map, marker ) {    
