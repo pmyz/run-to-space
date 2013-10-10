@@ -48,3 +48,17 @@ html, body{
 	margin-right: 0;
 	height: 50%;
 }
+
+#title { 
+font-family: Verdana ;
+font-style: bold; 
+color:blue;
+font-size:30px;
+} 
+
+#info{
+font-family: comic ;
+font-style: bold; 
+color:red;
+font-size:11px;
+}

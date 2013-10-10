@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html>
   <head>
     <meta charset="iso-8859-1" />
@@ -19,6 +19,7 @@
 			<ul>
 				<li><a href="#home">Home</a></li>
 				<li><a href="#shop">Shop</a></li>
+				<li><a href="#casino">Casino</a></li>
 				<div align="right" id="money"></div>
 			</ul>
 			<div id="home">
@@ -35,12 +36,15 @@
 				<div id="sav"></div>					
 			</div>
 			<div id="shop"> 
-				<table width=100%>
+				<table>
 					<tr>
 						<td><div id="tuning"></div></td>
-						<td align=right><div id="vehicle"></div></td>
+						<td width=100></td>
+						<td><div id="vehicle"></div></td>
 					</tr>
 				</table>
+			</div>
+			<div id="casino">
 			</div>
 		<div id="footer"></div>
 	</div>
@@ -52,7 +56,7 @@
 	
 	$('#header').append('<div id="title" class="title">Welcome to Run To Space</div><div id="contener1"></div>');
 	$('#money').append('Parcouru : <span id="compteurMetre">'+$.playerData['metres']+'</span>');
-	$('#money').append('<br><span id="compteurEndorphine">'+$.playerData['endorphine']+'</span> Endorphines');
+	$('#money').append('<br><span id="compteurEuros">'+$.playerData['euros']+'</span> €');
 	//$('#div1').append('<br><br><input type="text" id="input1" readonly="readonly"/ value="0">');
 	//$('#div1').append('<button id="btn1">run</button>');
 	//$('#btn1').on('click',function(){
