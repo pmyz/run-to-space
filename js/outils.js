@@ -58,22 +58,29 @@ function speedUp(prix,bonusSpeed,bonusMetres,i){
 	$('#error').html('');
 	if($.playerData['endorphine']>=prix)
 	{
-				
+	
+		//deduction du prix
+		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
+		$.playerData['endorphine']-=prix;
+		
+		//update speed
 		if($.playerData['bonusSpeed']<$.playerData['capSpeed'])
 		{
-		//update speed
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'])+bonusSpeed;
 		$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
+		
+		//augmentation du prix de l'objet
 		tuning[i].prize=prix*prix;
+		
 		}else{
 			$.playerData['bonusSpeed']=$.playerData['capSpeed']
 			$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
 			$('#error').html('<font color="red"> cap speed atteint</font>');
 		}
 		
+		//update metre
 		if($.playerData['bonusMetres']<$.playerData['capMetres'])
 		{
-		//update metre
 		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'])+bonusMetres;
 		$('#bonusMetres').text($.playerData['bonusMetres'])
 		}else{
@@ -81,9 +88,6 @@ function speedUp(prix,bonusSpeed,bonusMetres,i){
 			$('#bonusMetres').text(parseInt($.playerData['bonusMetres']));
 			$('#error').html('<font color="red"> cap metres atteint</font>');
 		}
-		
-		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
-		$.playerData['endorphine']-=prix;	
 		
 		//update compteur vitesse
 		drawChart();
