@@ -63,15 +63,15 @@ function speedUp(prix,bonusSpeed,bonusMetres,i){
 		$('#compteurEndorphine').text(parseInt($('#compteurEndorphine').text(),10)-prix);
 		$.playerData['endorphine']-=prix;
 		
+		//augmentation du prix de l'objet
+		tuning[i].prize=prix*2;
+		initTuning();
+		
 		//update speed
-		if($.playerData['bonusSpeed']<$.playerData['capSpeed'])
+		if(($.playerData['bonusSpeed']+bonusSpeed)<$.playerData['capSpeed'])
 		{
 		$.playerData['bonusSpeed']=parseInt($.playerData['bonusSpeed'])+bonusSpeed;
 		$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
-		
-		//augmentation du prix de l'objet
-		tuning[i].prize=prix*prix;
-		
 		}else{
 			$.playerData['bonusSpeed']=$.playerData['capSpeed']
 			$('#bonusSpeed').text(parseInt($.playerData['bonusSpeed']));
@@ -79,7 +79,7 @@ function speedUp(prix,bonusSpeed,bonusMetres,i){
 		}
 		
 		//update metre
-		if($.playerData['bonusMetres']<$.playerData['capMetres'])
+		if(($.playerData['bonusMetres']+bonusMetres)<$.playerData['capMetres'])
 		{
 		$.playerData['bonusMetres']=parseInt($.playerData['bonusMetres'])+bonusMetres;
 		$('#bonusMetres').text($.playerData['bonusMetres'])
@@ -154,6 +154,7 @@ function initVehicle(){
 }
 
 function initTuning(){
+	$('#tuning').text("");
 	var str='<table><tr><td align=center>Tuning</td></tr><tr>', i;
 	for(i=0;i<tuning.length;i++){
 		str+='<tr><td><input onclick="speedUp('+tuning[i].prize+','+tuning[i].bonusSpeed+','+tuning[i].bonusMetres+','+i+')" type=image height=64px width=64px src="'+tuning[i].img+'" id="btn_'+tuning[i].id+'" name="itemsBtn"></input></td>  <td>'+tuning[i].name+'('+tuning[i].prize+') bonusSpeed : '+tuning[i].bonusSpeed+' bonusMetres : '+tuning[i].bonusMetres+' </tr>';
