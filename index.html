@@ -10,6 +10,7 @@
 	<script type='text/javascript' src='https://www.google.com/jsapi'></script>
 	<script src="js/jquery-ui-1.10.3.custom.js"></script>
 	<script src="js/outils.js"></script>
+	<script src="js/chrono.js"></script>
 	<script src="js/googlemap.js"></script>
   </head>
   <body>
@@ -20,7 +21,9 @@
 				<li><a href="#home">Home</a></li>
 				<li><a href="#shop">Shop</a></li>
 				<li><a href="#casino">Casino</a></li>
+				<li><img width=32px height=32px src='images/flag.png' onClick="InitChrono()"/><span id="chrono">00:00:00:00</span></li>
 				<div align="right" id="money"></div>
+
 			</ul>
 			<div id="home">
 				
@@ -68,7 +71,6 @@
 	$('#stat').append('<br><br>Meter Bonus :<span id="bonusMetres">'+$.playerData['bonusMetres']+'</span> /<span id="capMetres">'+$.playerData['capMetres']+'</span><br>');
 	$('#vitesse').append('<br><br>Vitesse : <span id="compteurVitesse">2 km/h</span><br>');
 	$('#sav').append('<br><br><button id="save">save</button> <button id="reset">reset</button><br><br><br><br>');
-	
 	$('#save').button().on('click',saveData);
 	$('#reset').button().on('click',resetData);
 	$('#speedUp').button().on('click',speedUp);
@@ -76,5 +78,6 @@
 	$( "#menu" ).tabs();
 	initVehicle(); 
 	initTuning();
+	InitChrono();
 </script>
 </html>
