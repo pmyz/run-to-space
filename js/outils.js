@@ -21,8 +21,9 @@ function incrementerCompteur(){
 }
 
 function incrementerEuros(){
-	$('#compteurEuros').text(parseInt($('#compteurEuros').text(),10)+1000);
-	$.playerData['euros']=parseInt($('#compteurEuros').text(),10);
+	$.playerData['euros']=parseInt($.playerData['euros']+parseInt($.playerData['bonusEuros'],10));
+	$('#compteurEuros').text(parseInt($.playerData['euros']));
+
 }
 function saveData(){
 	localStorage.setItem("playerData", JSON.stringify($.playerData));
@@ -149,7 +150,7 @@ function initIncrement(){
 	clearInterval($.interval);
 	clearInterval($.interval1);
 	$.interval = setInterval(incrementerCompteur, 1000/parseInt($.playerData['bonusSpeed'],10));
-	$.interval1 = setInterval(incrementerEuros, 1000/parseInt($.playerData['bonusEuros'],10));
+	$.interval1 = setInterval(incrementerEuros, 1000);
 }
 function reloadInterval(){
 	clearInterval($.interval);
